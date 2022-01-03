@@ -6,6 +6,7 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
+        "deploy": "npm run build && gh-pages -d dist -t",
         "check": "svelte-check --tsconfig ./tsconfig.json"
     },
     "devDependencies": {
@@ -17,7 +18,8 @@
         "svelte-preprocess": "^4.10.1",
         "tslib": "^2.3.1",
         "typescript": "^4.5.4",
-        "vite": "^2.7.10"
+        "vite": "^2.7.10",
+        "gh-pages": "^3.2.3"
     },
     "prettier": {
         "semi": false,
