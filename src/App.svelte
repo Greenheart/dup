@@ -1,59 +1,19 @@
 <script lang="ts">
     const numbers = '0123456789'
-    const lower = 'abcdefghijklmnopqrstuvwxyz'
-    const upper = lower.toUpperCase()
     const special = `!#$%&()*+,-./:;<=>?@[\\]^_{|}~ `
-
-    let password = generatePassword(32)
 
     const isNumber = (character: string) => numbers.includes(character)
     const isSpecial = (character: string) => special.includes(character)
 
-    /**
-     * Generate a random password of a given length.
-     *
-     * @param length The password length.
-     * @param characters The set of characters to pick from.
-     * @returns A random password.
-     */
-    export function generatePassword(
-        length = 80,
-        characters = numbers + upper + lower + special,
-    ) {
-        return Array.from({ length }, (_) =>
-            getRandomCharacter(characters),
-        ).join('')
-    }
-
-    /**
-     * Get a random character from a given set of characters.
-     *
-     * @param characters The set of characters to pick from.
-     * @returns A random character.
-     */
-    function getRandomCharacter(characters: string) {
-        let randomNumber: number
-        // Due to the repeating nature of results from the remainder
-        // operator, we potentially need to regenerate the random number
-        // several times. This is required to ensure all characters have
-        // the same probability to get picked. Otherwise, the first
-        // characters would appear more often, resulting in a weaker
-        // password security.
-        // Learn more: https://samuelplumppu.se/blog/generate-password-in-browser-web-crypto-api
-        do {
-            randomNumber = crypto.getRandomValues(new Uint8Array(1))[0]
-        } while (randomNumber >= 256 - (256 % characters.length))
-
-        return characters[randomNumber % characters.length]
-    }
+    let text = ''
 </script>
 
 <main>
     <p>Text to format:</p>
-    <textarea type="text" bind:value={password} />
+    <textarea type="text" bind:value={text} />
 
     <p class="format">
-        {#each password as character, index (`${character}:${index}`)}
+        {#each text as character, index (`${character}:${index}`)}
             <span class:n={isNumber(character)} class:s={isSpecial(character)}>{character}</span>
         {/each}
     </p>
@@ -83,10 +43,7 @@
     }
 
     textarea {
-        /* color: white; */
         padding: 1rem 2rem;
-        /* outline: 0;
-    border: 0; */
         text-align: center;
         font-size: 20px;
         width: 100%;
