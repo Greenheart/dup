@@ -10,24 +10,33 @@
 
 <main>
     <p>Text to format:</p>
-    <textarea type="text" bind:value={text} />
+    <textarea bind:value={text} autocomplete="off" spellcheck="false" />
 
-    <p class="format">
+    <p
+        class="f"
+        on:click={() => {
+            window
+                .getSelection()
+                .selectAllChildren(document.querySelector('.f'))
+        }}
+    >
         {#each text as character, index (`${character}:${index}`)}
-            <span class:n={isNumber(character)} class:s={isSpecial(character)}>{character}</span>
+            <span class:n={isNumber(character)} class:s={isSpecial(character)}>
+                {character}
+            </span>
         {/each}
     </p>
+    <a href="https://github.com/Greenheart/dup" target="_blank" rel="noopener">Code on GitHub</a>
 </main>
 
 <style>
-    :root {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-            Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    :global(html, body) {
+        background: #191919;
+        margin: 0;
     }
 
     * {
         box-sizing: border-box;
-        /* margin: 0; */
         padding: 0;
     }
 
@@ -50,17 +59,19 @@
         max-width: 650px;
     }
 
-    .format {
+    a {
+        color: #52bdfb !important;
+    }
+
+    .f {
         border: 0;
         outline: 0;
         font-size: 22px;
         margin: 0;
-        padding: 10vh;
-    }
-
-    :global(html, body) {
-        background: #191919;
-        margin: 0;
+        padding: 4rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 650px;
     }
 
     .n {
