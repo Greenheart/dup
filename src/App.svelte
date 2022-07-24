@@ -32,6 +32,7 @@
         autocomplete="off"
         spellcheck="false"
         on:keydown={updateQR}
+        on:paste={updateQR}
     />
 
     <p
