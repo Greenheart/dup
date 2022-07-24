@@ -1,36 +1,23 @@
-<script lang="ts" context="module">
-    declare global {
-        interface Window {
-            QRCode: {
-                toCanvas: (
-                    canvas: HTMLCanvasElement,
-                    text: string,
-                    callback: (error?: string) => void,
-                ) => void
-            }
-        }
-    }
+<script lang="ts">
+    import { onMount } from 'svelte'
+    import QRCode from 'qrcode'
+    import debounce from 'lodash/debounce'
 
     const numbers = '0123456789'
     const special = `!#$%&()*+,-./:;<=>?@[\\]^_{|}~ `
 
     const isNumber = (character: string) => numbers.includes(character)
     const isSpecial = (character: string) => special.includes(character)
-</script>
 
-<script lang="ts">
-    import { onMount } from 'svelte'
-    import debounce from 'lodash/debounce'
     let text = ''
     let canvas: HTMLCanvasElement
     let loaded = false
 
     const updateQR = debounce(() => {
-        if (text) {
-            window.QRCode.toCanvas(canvas, text, () => {
-                loaded = true
-            })
-        }
+        if (!text) return
+        QRCode.toCanvas(canvas, text, () => {
+            loaded = true
+        })
     }, 50) as any
 
     onMount(() => {
