@@ -1,16 +1,51 @@
-<script lang="ts">
+<script lang="ts" context="module">
+    declare global {
+        interface Window {
+            QRCode: {
+                toCanvas: (
+                    canvas: HTMLCanvasElement,
+                    text: string,
+                    callback: (error?: string) => void,
+                ) => void
+            }
+        }
+    }
+
     const numbers = '0123456789'
     const special = `!#$%&()*+,-./:;<=>?@[\\]^_{|}~ `
 
     const isNumber = (character: string) => numbers.includes(character)
     const isSpecial = (character: string) => special.includes(character)
+</script>
 
+<script lang="ts">
+    import { onMount } from 'svelte'
+    import debounce from 'lodash/debounce'
     let text = ''
+    let canvas: HTMLCanvasElement
+    let loaded = false
+
+    const updateQR = debounce(() => {
+        if (text) {
+            window.QRCode.toCanvas(canvas, text, () => {
+                loaded = true
+            })
+        }
+    }, 50) as any
+
+    onMount(() => {
+        updateQR()
+    })
 </script>
 
 <main>
     <p>Text to format:</p>
-    <textarea bind:value={text} autocomplete="off" spellcheck="false" />
+    <textarea
+        bind:value={text}
+        autocomplete="off"
+        spellcheck="false"
+        on:keydown={updateQR}
+    />
 
     <p
         class="f"
@@ -26,7 +61,12 @@
             </span>
         {/each}
     </p>
-    <a href="https://github.com/Greenheart/dup" target="_blank" rel="noopener">Code on GitHub</a>
+
+    <canvas bind:this={canvas} class:h={!loaded || !text} />
+
+    <a href="https://github.com/Greenheart/dup" target="_blank" rel="noopener">
+        Code on GitHub
+    </a>
 </main>
 
 <style>
@@ -59,8 +99,17 @@
         max-width: 650px;
     }
 
+    canvas {
+        background: white;
+        margin: 16px 0;
+    }
+
     a {
         color: #52bdfb !important;
+    }
+
+    .h {
+        display: none;
     }
 
     .f {
