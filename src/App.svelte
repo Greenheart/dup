@@ -44,9 +44,9 @@
         }}
     >
         {#each text as character, index (`${character}:${index}`)}
-            <span class:n={isNumber(character)} class:s={isSpecial(character)}>
-                {character}
-            </span>
+            <span class:n={isNumber(character)} class:s={isSpecial(character)}
+                >{character}</span
+            >
         {/each}
     </p>
 
@@ -109,6 +109,7 @@
         display: flex;
         flex-wrap: wrap;
         max-width: 650px;
+        white-space: pre;
     }
 
     .n {
