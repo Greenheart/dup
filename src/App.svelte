@@ -23,6 +23,8 @@
     onMount(() => {
         updateQR()
     })
+
+    let format: HTMLButtonElement
 </script>
 
 <main>
@@ -35,12 +37,10 @@
         on:paste={updateQR}
     />
 
-    <p
-        class="f"
+    <button
+        bind:this={format}
         on:click={() => {
-            window
-                .getSelection()
-                .selectAllChildren(document.querySelector('.f'))
+            window.getSelection()?.selectAllChildren(format)
         }}
     >
         {#each text as character, index (`${character}:${index}`)}
@@ -48,7 +48,7 @@
                 >{character}</span
             >
         {/each}
-    </p>
+    </button>
 
     <canvas bind:this={canvas} class:h={!loaded || !text} />
 
@@ -100,13 +100,18 @@
         display: none;
     }
 
-    .f {
+    button {
+        background: transparent;
+        color: #fff;
+        font-family: 'Courier New', Courier, monospace;
+        width: 100%;
         border: 0;
         outline: 0;
         font-size: 22px;
         margin: 0;
         padding: 4rem 0;
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
         max-width: 650px;
         white-space: pre;
