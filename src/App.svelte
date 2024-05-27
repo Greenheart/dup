@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
     import QRCode from 'qrcode'
     import debounce from 'lodash/debounce'
 
@@ -9,9 +8,11 @@
     const isNumber = (character: string) => numbers.includes(character)
     const isSpecial = (character: string) => special.includes(character)
 
-    let text = ''
     let canvas: HTMLCanvasElement
-    let loaded = false
+    let format: HTMLButtonElement
+
+    let text = $state('')
+    let loaded = $state(false)
 
     const updateQR = debounce(() => {
         if (!text) return
@@ -20,11 +21,9 @@
         })
     }, 50) as any
 
-    onMount(() => {
+    $effect(() => {
         updateQR()
     })
-
-    let format: HTMLButtonElement
 </script>
 
 <main>
@@ -33,13 +32,13 @@
         bind:value={text}
         autocomplete="off"
         spellcheck="false"
-        on:keydown={updateQR}
-        on:paste={updateQR}
-    />
+        onkeydown={updateQR}
+        onpaste={updateQR}
+    ></textarea>
 
     <button
         bind:this={format}
-        on:click={() => {
+        onclick={() => {
             window.getSelection()?.selectAllChildren(format)
         }}
     >
@@ -50,7 +49,7 @@
         {/each}
     </button>
 
-    <canvas bind:this={canvas} class:h={!loaded || !text} />
+    <canvas bind:this={canvas} class:h={!loaded || !text}></canvas>
 
     <a href="https://github.com/Greenheart/dup" target="_blank" rel="noopener">
         Code on GitHub
