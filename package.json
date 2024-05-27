@@ -6,7 +6,7 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "deploy": "npm run build && gh-pages -d dist -t",
+        "deploy": "pnpm build && gh-pages -d dist -t",
         "check": "svelte-check --tsconfig ./tsconfig.json"
     },
     "devDependencies": {
