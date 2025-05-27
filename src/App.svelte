@@ -1,6 +1,6 @@
 <script lang="ts">
     import QRCode from 'qrcode'
-    import debounce from 'lodash/debounce'
+    import { debounce } from 'es-toolkit'
 
     const numbers = '0123456789'
     const special = `!#$%&()*+,-./:;<=>?@[\\]^_{|}~ `
