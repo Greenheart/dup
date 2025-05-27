@@ -14,7 +14,7 @@
     let text = $state('')
     let loaded = $state(false)
 
-    const updateQR = debounce(() => {
+    const updateQR = debounce((text: string) => {
         if (!text) return
         QRCode.toCanvas(canvas, text, () => {
             loaded = true
@@ -22,12 +22,34 @@
     }, 50) as any
 
     $effect(() => {
-        updateQR()
+        updateQR(text)
     })
 </script>
 
 <main>
-    <p>Text to format:</p>
+    <header>
+        <button
+            onclick={async () => {
+                if (navigator.clipboard) {
+                    text = await navigator.clipboard?.readText()
+                }
+            }}
+            ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+                ><path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0q.083.292.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0q.002-.32.084-.612m7.332 0q.969.073 1.927.184c1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48 48 0 0 1 1.927-.184"
+                /></svg
+            > Paste</button
+        > <span>or type text to format:</span>
+    </header>
     <textarea
         bind:value={text}
         autocomplete="off"
@@ -39,7 +61,9 @@
     <button
         bind:this={format}
         onclick={() => {
-            window.getSelection()?.selectAllChildren(format)
+            if (text.length) {
+                window.getSelection()?.selectAllChildren(format)
+            }
         }}
     >
         {#each text as character, index (`${character}:${index}`)}
@@ -68,7 +92,7 @@
     }
 
     main {
-        padding: 2rem;
+        padding: 2rem 1rem;
         color: white;
         display: flex;
         justify-content: center;
@@ -76,6 +100,29 @@
         flex-direction: column;
         font-family: 'Courier New', Courier, monospace;
         text-align: center;
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        justify-content: start;
+        padding-bottom: 1rem;
+        text-align: start;
+        font-size: 0.875rem;
+
+        button {
+            padding: 0.5rem;
+            max-width: auto;
+            width: auto;
+            background: white;
+            color: black;
+            font-size: 0.875rem;
+
+            &:hover {
+                background: #ccc;
+            }
+        }
     }
 
     textarea {
