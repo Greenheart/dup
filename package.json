@@ -10,14 +10,14 @@
         "check": "svelte-check --tsconfig ./tsconfig.json"
     },
     "devDependencies": {
-        "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "@sveltejs/vite-plugin-svelte": "^6.1.2",
         "@tsconfig/svelte": "^5.0.4",
         "gh-pages": "^6.3.0",
-        "prettier": "^3.5.3",
-        "svelte": "^5.33.4",
-        "svelte-check": "^4.2.1",
-        "typescript": "^5.8.3",
-        "vite": "^6.3.5"
+        "prettier": "^3.6.2",
+        "svelte": "^5.38.1",
+        "svelte-check": "^4.3.1",
+        "typescript": "^5.9.2",
+        "vite": "^7.1.2"
     },
     "prettier": {
         "semi": false,
@@ -26,7 +26,7 @@
         "trailingComma": "all"
     },
     "dependencies": {
-        "es-toolkit": "^1.38.0",
+        "es-toolkit": "^1.39.9",
         "qrcode": "^1.5.4"
     },
     "pnpm": {
